@@ -1,13 +1,6 @@
 folder <- "Inputs"
 filez <- as.list(list.files(folder, full.names = TRUE))
-filez[[1]]
-
 filename <- filez[[1]]
-
-egg <- gsub(".*/", "", filename)
-egg <- gsub("_.*", "", egg)
-paste("NDVI", egg, sep = "_")
-
 
 multi <- filename %>% stack() %>% brick()
 
@@ -27,8 +20,9 @@ NDVI_from_filename <- function(filename){
   multi <- filename %>% stack() %>% brick()
   NDVI <- overlay(multi[[4]], multi[[3]], fun = Calculate_NDVI)
   plot(NDVI)
+  
+  
   return(new_filename)
 }
-
 
 NDVI_from_filename(filez[[2]])
