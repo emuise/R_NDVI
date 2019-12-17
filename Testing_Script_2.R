@@ -22,7 +22,7 @@ NDVI_from_filename <- function(filename){
   plot(NDVI)
   
   
-  return(new_filename)
+  return(NDVI)
 }
 
 NDVI_from_filename(filez[[2]])
