@@ -1,28 +1,40 @@
 folder <- "Inputs"
 filez <- as.list(list.files(folder, full.names = TRUE))
-filename <- filez[[1]]
-
-multi <- filename %>% stack() %>% brick()
+trefry_study <- readOGR("Study_Areas/trefry_study.shp")
 
 Calculate_NDVI <- function(NIR_band, Red_band){
   NDVI <- (NIR_band - Red_band) / (NIR_band + Red_band)
   return(NDVI)
 }
 
-NDVI_from_filename <- function(filename){
+NDVI_from_filename <- function(filename, study_area){
   #getting new filename using the date of the original image
   date <- gsub(".*/", "", filename)
   date <- gsub("_.*", "", date)
   new_filename <- paste("NDVI", date, sep = "_")
   
+  #convert from filename to a brick raster as these are apparently faster for calculation
+  multi <- filename %>% stack() %>% brick()
+  
+  #clip the raster by the input study area
+  multi <- crop(multi, study_area)
   
   #calculating NDVI
-  multi <- filename %>% stack() %>% brick()
+  #apparently using overlay with a premade function is faster, but this is the same as calling the function
   NDVI <- overlay(multi[[4]], multi[[3]], fun = Calculate_NDVI)
-  plot(NDVI)
   
+  #convert from raster to point, add date in the second column
+  NDVI_points <- rasterToPoints(NDVI, spatial = TRUE)
+  NDVI_points$Date <- date
   
-  return(NDVI)
+  return(NDVI_points)
 }
 
-NDVI_from_filename(filez[[2]])
+##All stuff to test whats going on inside the function
+#NDVI_from_filename(filez[[10]], trefry_study)
+#working_NDVI <- NDVI_from_filename(filename = filez[[1]], study_area = trefry_study)
+#working_NDVI@data
+#plot(working_NDVI)
+#NDVI_points <- rasterToPoints(working_NDVI, spatial = TRUE)
+#head(NDVI_points)
+#NDVI_points@Data
