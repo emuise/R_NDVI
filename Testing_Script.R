@@ -1,9 +1,3 @@
-library(tidyverse)
-library(raster)
-library(rgdal)
-library(rgeos)
-library(RColorBrewer)
-
 multi_20160701 <- stack("Imagery/20160701_172513_0c2b_1B_AnalyticMS_DN.tif")
 multi_20160701 <- brick(multi_20160701)
 
