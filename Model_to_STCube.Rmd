@@ -1,0 +1,61 @@
+---
+title: "Model_to_STCube"
+author: "Evan Muise"
+date: "11/02/2020"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Packages used
+
+```{r}
+library(raster)
+library(rgdal)
+library(rgeos)
+library(tidyverse)
+#library(reticulate)
+#library(RColorBrewer)
+```
+
+##Data
+
+```{r}
+NDVI_points <- readOGR("Trefry_Points_NDVI/Trefry_Points_NDVI.shp")
+```
+
+##Functions
+```{r}
+ToSTCInput <- function(ModelOutput){
+  layers <- length(grep("Date", colnames(ModelOutput@data)))
+  sTime <- Sys.time()
+  
+  for (i in 1:layers) {
+    backup <- ModelOutput
+    first <- 2 + 2 * i
+    second <- 3 + 2 * i
+    backup@data <- backup@data[,c(1:3, first:second)]
+    colnames(backup@data)[4] <- "Date"
+    colnames(backup@data)[5] <- "Mean_NDVI"
+    backup@data[,4] <- as.character(backup@data[,4])
+    filename <- gsub("\\..*", "", backup@data[1,4])
+    date <- sub(".*_", "", filename)
+    backup@data[,4] <- date
+    
+    
+    writeOGR(backup, dsn = "R_Outputs2", layer = filename, driver = "ESRI Shapefile", overwrite_layer = TRUE)
+    
+    
+    
+  }
+  eTime <-  Sys.time()
+  transpired <- eTime - sTime
+  return(transpired)
+}
+
+
+ToSTCInput(NDVI_points)
+```
+
