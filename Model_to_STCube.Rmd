@@ -21,13 +21,13 @@ library(tidyverse)
 dir.create("R_Outputs2")
 ```
 
-##Data
+## Data
 
 ```{r}
 NDVI_points <- readOGR("Out_From_ArcPro/Trefry_Points_NDVI.shp")
 ```
 
-##Functions
+## Functions
 ```{r}
 ToSTCInput <- function(ModelOutput){
   layers <- length(grep("Date", colnames(ModelOutput@data)))
