@@ -25,7 +25,7 @@ library(tidyverse)
 ```{r}
 folder <- "Inputs"
 filez <- as.list(list.files(folder, full.names = TRUE))
-trefry_study <- c(readOGR("Study_Areas/trefry_study.shp"))
+study <- c(readOGR("Study_Areas/trefry_study.shp"))
 ```
 
 ## Scripts
@@ -70,7 +70,7 @@ test is defined as a list first to hopefully make it go faster, i think i read i
 ```{r}
 #test <- vector(mode = "list", length = length(filez))
 eTime <- Sys.time()
-test <- map2(filez, trefry_study, NDVI_from_filename)
+test <- map2(filez, study, NDVI_from_filename)
 sTime <- Sys.time()
 print(sTime - eTime)
 ```
