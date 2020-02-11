@@ -18,12 +18,13 @@ library(rgeos)
 library(tidyverse)
 #library(reticulate)
 #library(RColorBrewer)
+dir.create("R_Outputs2")
 ```
 
 ##Data
 
 ```{r}
-NDVI_points <- readOGR("Trefry_Points_NDVI/Trefry_Points_NDVI.shp")
+NDVI_points <- readOGR("Out_From_ArcPro/Trefry_Points_NDVI.shp")
 ```
 
 ##Functions

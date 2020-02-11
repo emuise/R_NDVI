@@ -18,6 +18,7 @@ library(rgeos)
 library(tidyverse)
 #library(reticulate)
 #library(RColorBrewer)
+dir.create("R_Outputs")
 ```
 
 ## Input Datasets
