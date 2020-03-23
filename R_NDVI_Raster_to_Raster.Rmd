@@ -71,7 +71,7 @@ NDVI_from_filename <- function(filename, study_area){
 ```
 
 ## Create Files
-test is defined as a list first to hopefully make it go faster, i think i read it does that somewhere
+
 
 ```{r}
 #test <- vector(mode = "list", length = length(filez))
