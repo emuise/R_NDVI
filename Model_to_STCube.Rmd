@@ -4,6 +4,7 @@ author: "Evan Muise"
 date: "11/02/2020"
 output: html_document
 ---
+Available from https://github.com/emuise/R_NDVI
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)

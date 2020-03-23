@@ -4,6 +4,7 @@ author: "Evan Muise"
 date: "06/02/2020"
 output: html_document
 ---
+Available from https://github.com/emuise/R_NDVI
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
@@ -19,6 +20,7 @@ library(tidyverse)
 #library(reticulate)
 #library(RColorBrewer)
 dir.create("R_Outputs")
+dir.create("Clipped_Rasters")
 ```
 
 ## Input Datasets
@@ -26,7 +28,7 @@ dir.create("R_Outputs")
 ```{r}
 folder <- "Inputs"
 filez <- as.list(list.files(folder, full.names = TRUE))
-study <- c(readOGR("Study_Areas/trefry_study.shp"))
+study <- c(readOGR("Study_Areas/Kejimkujik_study.shp"))
 ```
 
 ## Scripts
@@ -43,6 +45,8 @@ NDVI_from_filename <- function(filename, study_area){
   date <- gsub("_.*", "", date)
   new_filename <- paste("NDVI", date, sep = "_")
   new_filename <- paste(new_filename, ".tif", sep = "")
+  new_filename2 <- paste("RGB", date, sep = "_")
+  new_filename2 <- paste(new_filename2, ".tif", sep = "")
   
   #convert from filename to a brick raster as these are apparently faster for calculation
   multi <- filename %>% stack() %>% brick()
@@ -56,6 +60,7 @@ NDVI_from_filename <- function(filename, study_area){
   
   #save into outputs folder
   writeRaster(NDVI, filename = file.path("R_Outputs", new_filename), format = "GTiff", overwrite = TRUE)
+  writeRaster(multi, filename = file.path("Clipped_Rasters", new_filename2), format = "GTiff", overwrite = TRUE)
   
   eTime <-  Sys.time()
   transpired <- eTime - sTime
